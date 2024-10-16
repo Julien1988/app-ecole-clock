@@ -2,6 +2,7 @@
 import React, {useEffect, useState} from "react";
 // @ts-ignore
 import {AnalogTime} from "react-clock-select";
+import Image from "next/image";
 // @ts-ignore
 declare module "react-clock-select";
 
@@ -61,9 +62,10 @@ export default function Home() {
             className="">
             <main className="flex flex-col min-h-dvh gap-8 items-center justify-center  bg-black">
 
-                <div className={'flex flex-col gap-8 justify-center items-center'}>
+                <div className={'flex flex-col gap-8 justify-center items-center w-auto'}>
 
-                    <div>
+                    <div className={"relative flex justify-center"}>
+                        <Image className={"absolute ce min-h-full min-w-fit opacity-20"} src={"/memeturbo.png"} width={100} height={100} alt={"memeTurbo"}/>
                         <AnalogTime type={"display"}
                                     value={generatedTime}
                                     baseColor={"rgb(219 39 119"}
