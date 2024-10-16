@@ -1,101 +1,96 @@
-import Image from "next/image";
+'use client';
+import React, {useEffect, useState} from "react";
+// @ts-ignore
+import {AnalogTime} from "react-clock-select";
+// @ts-ignore
+declare module "react-clock-select";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    const [generatedTime, setGeneratedTime] = useState(0);
+    const [userInput, setUserInput] = useState(""); // Stocke l'heure entrée par l'utilisateur
+    const [isCorrect, setIsCorrect] = useState(false); // Stocke si l'heure entrée par l'utilisateur est correcte
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+
+    // Générer l'heure aléatoire une seule fois lors du montage du composant
+    useEffect(() => {
+        creatRandomHour();
+    }, []);
+
+    const creatRandomHour = () => {
+
+        const randomHour = Math.floor(Math.random() * 24); // Génère un nombre aléatoire entre 0 et 23
+        const randomMinute = Math.random() < 0.5 ? 0 : 30; // Fixe les minutes à 00 ou 30 aléatoirement
+        const fakeDate = new Date(`December 17, 1995 ${randomHour}:${randomMinute}:00`);
+        // @ts-ignore
+        console.log('fakeDate', fakeDate);
+        // @ts-ignore
+        setGeneratedTime(fakeDate);
+
+    };
+    const resultcheck = (userInput: string, generatedTime: any) => {
+        const [userHour, userMinute] = userInput.split(':').map(Number);
+        const generatedHour = generatedTime.getHours();
+        const generatedMinute = generatedTime.getMinutes();
+        console.log('userHour', userHour, 'userMinute', userMinute, 'generatedHour', generatedHour, 'generatedMinute', generatedMinute);
+        return userHour === generatedHour && userMinute === generatedMinute;
+    }
+    const reset = (e: { preventDefault: () => void; }    ) => {
+        e.preventDefault();
+        setIsCorrect(false);
+        creatRandomHour();
+        setUserInput("");
+
+    }
+    const handleClick = (e: { preventDefault: () => void; }) => {
+        e.preventDefault();
+        if (resultcheck(userInput, generatedTime)) {
+            console.log("Bravo, c'est la bonne heure !");
+            setIsCorrect(true);
+        }
+        console.log('ici', userInput, generatedTime);
+
+    }
+
+    return (
+        <div
+            className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+            <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+
+                <div className={'flex flex-col gap-8'}>
+
+                    <div>
+                        <AnalogTime type={"display"}
+                                    value={generatedTime}
+                                    baseColor={"#60a5fa"}
+                                    hourHandColor={"#2563eb"}
+                                    minuteHandColor={"#2563eb"}
+                                    secondHandColor={"black"}
+                                    size={3}
+                                    liveUpdater={false}
+                        />
+                    </div>
+                    <div className={"flex flex-col"}>
+                        <label className={'flex gap-2 text-xl'}>
+                            <p>écrit l'heure : </p>
+                            <input placeholder={"12:00"} className={'text-blue-300'} value={userInput}
+                                   onChange={e => setUserInput(e.target.value)}/>
+                        </label>
+                        {isCorrect && <p className={'text-green-500'}>Bravo, c'est la bonne heure !</p> &&
+                            <button className={" rounded bg-green-400 p-3 my-6 mx-6"} onClick={reset}> essaye encore
+                            </button>
+                        }
+
+
+                            <button className={" rounded bg-amber-600 p-3 my-6 mx-6"} onClick={handleClick}> Essaye
+                                ici</button>
+
+
+                    </div>
+
+                </div>
+
+
+            </main>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+    );
 }
