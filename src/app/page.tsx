@@ -76,18 +76,19 @@ export default function Home() {
                     </div>
                     <div className={"flex flex-col"}>
                         <label className={'flex gap-2 text-xl flex-col'}>
-                            <p className={"text-center text-2xl first-letter:uppercase"}>écrit l'heure ici :</p>
+                            <p className={"text-center text-2xl first-letter:uppercase"}>écris l'heure ici :</p>
                             {isAM && <p className={ 'text-center text-green-500'}>le matin</p>}
                             {!isAM && <p className={' text-center text-green-500'}>le soir</p>}
                             <input placeholder={"12:00"} className={'text-blue-300 font-bold h-12 rounded text-center '} value={userInput}
                                    onChange={e => setUserInput(e.target.value)}/>
                         </label>
                         {isCorrect && <p className={'text-green-500'}>Bravo, c'est la bonne heure !</p> &&
-                            <a className={" rounded bg-green-400 p-3 my-6 mx-6"} onClick={reset}> essaye encore
+                            <a className={" rounded bg-green-400 p-3 my-6 mx-6"} onClick={reset}> essaie encore
                             </a>
                         }
                         {!isCorrect &&
-                            <a className={" rounded bg-rose-900\t p-3 my-6 mx-6 text-center text-2xl hover:bg-pink-600 "} onClick={handleClick}> Essaye
+                            <a className={" rounded bg-rose-900\t p-3 my-6 mx-6 text-center text-2xl" +
+                                " hover:bg-pink-600 "} onClick={handleClick}> Essaie
                                 ici</a>
                         }
 
