@@ -76,13 +76,12 @@ export default function Home() {
                                    onChange={e => setUserInput(e.target.value)}/>
                         </label>
                         {isCorrect && <p className={'text-green-500'}>Bravo, c'est la bonne heure !</p> &&
-                            <button className={" rounded bg-green-400 p-3 my-6 mx-6"} onClick={reset}> essaye encore
-                            </button>
+                            <a className={" rounded bg-green-400 p-3 my-6 mx-6"} onClick={reset}> essaye encore
+                            </a>
                         }
 
-
-                            <button className={" rounded bg-amber-600 p-3 my-6 mx-6"} onClick={handleClick}> Essaye
-                                ici</button>
+                            <a className={" rounded bg-amber-600 p-3 my-6 mx-6"} onClick={handleClick}> Essaye
+                                ici</a>
 
 
                     </div>
